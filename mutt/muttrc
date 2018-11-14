@@ -1,0 +1,145 @@
+source ~/.mutt/gpg.rc
+source ~/.mutt/user
+set pgp_use_gpg_agent = yes
+set pgp_sign_as = 704A1B4E10C3BC2C
+set pgp_timeout = 3600
+set pgp_good_sign="^gpg: Good signature from"
+set crypt_autosign = yes
+set crypt_replysignencrypted = yes
+set crypt_verify_sig=yes
+#set mbox_type=Maildir
+set mbox_type=mbox
+set realname=$my_realname
+set from="$my_username@$my_domain"
+set use_from=yes
+auto_view text/html
+auto_view text/calendar
+auto_view text/x-vcard
+auto_view text/vcard
+alternative_order text/plain text/enriched text/html
+
+set spoolfile="~/mbox/"
+set folder="~/mbox/"
+set mask="!^\\.[^.]"
+set record="+.Sent"
+set postponed="+.Drafts"
+set sort=threads
+set sort_browser=reverse-date
+set sort_aux=last-date-received
+set pager_index_lines=12
+set text_flowed=yes
+set imap_keepalive=30
+set timeout=10
+set beep_new
+set editor="nvim"
+set move=yes
+set keep_flagged=yes
+
+mailboxes ! + `\
+for file in ~/mbox/.*; do \
+  box=$(basename "$file"); \
+  if [ ! "$box" = '.' -a ! "$box" = '..' -a ! "$box" = '.customflags' \
+      -a ! "$box" = '.subscriptions' ]; then \
+    echo -n "\"+$box\" "; \
+  fi; \
+done`
+
+macro index c "<change-folder>?<toggle-mailboxes>" "open a different folder"
+macro pager c "<change-folder>?<toggle-mailboxes>" "open a different folder"
+# Automatically log in to this mailbox at startup
+set folder="imaps://outlook.office365.com:993/"
+set spoolfile= +INBOX
+mailboxes +ums +creditmemo +act +ryanmorillo +onmetal +jeff/harwick +mgraham
+set record="=Sent Items"
+set postponed="=Drafts"
+set smtp_authenticators="login"
+set imap_user="$my_username@$my_domain"
+set imap_pass=$my_password
+set smtp_pass=$my_password
+set smtp_url="smtp://$my_username@$my_domain@smtp.office365.com:587/"
+
+# weed headers
+set weed=yes
+# activate TLS if available on the server
+set ssl_starttls=yes
+# always use SSL when connecting to a server
+set ssl_force_tls=yes
+# wait to enter mailbox manually
+set imap_passive
+# Automatically poll subscribed mailboxes for new mail (new in 1.5.11)
+set imap_check_subscribed="yes"
+set imap_list_subscribed="yes"
+# Reduce polling frequency to a sane level
+set mail_check=60
+# And poll the current mailbox more often (not needed with IDLE in post 1.5.11)
+set timeout=10
+set imap_idle
+set ssl_use_sslv3=yes
+# keep a cache of headers for faster loading (1.5.9+?)
+set header_cache=~/.hcache
+set message_cachedir=~/.hcache
+# Display download progress every 5K
+set net_inc=5
+# Use abook with Mutt
+#set query_command="mutt_ldap.py '%s'"
+set query_command="echo ;/bin/run-parts -a '%s' /home/ryan/.mutt/address-providers |grep '@'"
+#abook --mutt-query '%s'"
+macro index A     "|abook --add-email\n" 'add sender to abook'
+macro pager A     "|abook --add-email\n" 'add sender to abook'
+macro index,pager \cb "<pipe-message> urlscan<Enter>" "call urlscan to extract URLs out of a message"
+macro attach,compose \cb "<pipe-entry> urlscan<Enter>" "call urlscan to extract URLs out of a message"
+
+macro pager \ef "|/home/ryan/.mutt/scripts/view-x-face<enter>" "display the X=Face inclueded in them mail"
+# Vim like keybinds
+bind pager j next-line
+bind pager k previous-line
+mime_lookup application/octet-stream
+set mime_forward=ask-no
+#set mime_forward_rest=yes
+#set mailcap_path="~/.mutt/mutt.mailcap"
+# save iCal to khal
+#macro pager \Ck  "!/usr/local/bin/khal new $(~/.mutt/scripts/ical_filter.pl ~/.mutt/temp/caldata/cur | ~/.mutt/scripts/mutt2khal.awk)" "Saving Calendar event"
+#NEXT LINE SHOULD BE HANDLED in /etc/mailcap
+#macro pager \Cl "<pipe-entry> ~/.mutt/scripts/ical_filter.pl<Enter>"
+color header brightred black subject
+color index brightred black Jordan.Puckett
+color index magenta default thomas.hanrahan
+color index yellow default jeff.harwick
+macro pager \Ck  "!/usr/bin/khal new $(~/.mutt/scripts/mutt2khal.awk ~/.mutt/temp/caldata/cur)" "Saving Calendar event"
+
+alias boss Jordan Puckett <jordan.puckett@RACKSPACE.COM>
+alias anil Anil Sreedharan <anil.sreedharan@RACKSPACE.COM>
+alias ashok Ashok Chandran <ashok.chandran@RACKSPACE.COM>
+alias cantu Chris Cantu <chris.cantu@rackspace.com>
+alias cat Katherine Geltz <katherinegeltz@gmail.com>
+alias dharun Dharunkumar Matheswaran <dharunkumar.matheswa@RACKSPACE.COM>
+alias edar Ananda Babu Edara <Edara.Babu@rackspace.com>
+alias franklin Franklin Naval <franklin.naval@RACKSPACE.COM>
+alias gretchen Gretchen Everson <gretchen.everson@rackspace.com>
+alias hector Hector Munoz <hector.munoz@rackspace.com>
+alias kamesh Kamesh Anandan <kamesh.anandan@RACKSPACE.COM>
+alias kondal Kondal Reddy Avancha <kondalreddy.avancha@RACKSPACE.COM>
+alias libni Libni Ortiz-Valles <libni.ortizvalles@RACKSPACE.COM>
+alias me Ryan <ryanmorillo@gmail.com>
+alias ning Ning Zou <ning.zou@RACKSPACE.COM>
+alias rama Rama Chillimuntha <rama.chillimuntha@rackspace.com>
+alias ravi Ravee Rachakonda <ravi.rachakonda@RACKSPACE.COM>
+alias sand Sandhya Vemulapalli <Sandhya.Vemulapalli@rackspace.com>
+alias satish Satish Manukonda <satish.manukonda@RACKSPACE.COM>
+alias tj TJ Hanrahan <thomas.hanrahan@RACKSPACE.COM>
+alias venu Venu Rachakonda <venu.rachakonda@RACKSPACE.COM>
+alias vinod Vinod Nagappan <vinod.nagappan@RACKSPACE.COM>
+alias yung Yung Lai <yung.lai@RACKSPACE.COM>
+alias gscs gscs_developers@rackspace.com
+alias arun Arun Sasikumaran <Arun.Sasikumaran@rackspace.com>
+alias maria.gero Maria Gero <maria.gero@rackspace.com>
+alias get Enterprise Applications DevOps Team <corpsvcdevops@rackspace.com>
+alias teeth teeth-dev@lists.rackspace.com
+alias mike Michael Graham <mgraham@rackspace.com>
+alias dustin Dustin Brown <dustin.brown@RACKSPACE.COM>
+alias hbrown Heath Brown <heath.brown@RACKSPACE.COM>
+alias bobo Robert Mitchell <robert.mitchell@RACKSPACE.COM>
+alias habib Habibullah Pagarkar <habibullah.pagarkar@RACKSPACE.COM>
+alias nater Nathan House <nathan.house@RACKSPACE.COM>
+alias eddiedev Eddie Vasquez <eddie.vasquez@RACKSPACE.COM>
+alias devs data_developers@rackspace.com

@@ -1,0 +1,36 @@
+# abook addressbook file
+
+[format]
+program=abook
+version=0.6.0pre2
+
+
+[0]
+name=Nick Guyer
+email=nick.guyer@rackspace.com
+
+[1]
+name=James Tiner
+email=james.tiner@RACKSPACE.COM
+
+[2]
+name=TJ Hanrahan
+email=thomas.hanrahan@RACKSPACE.COM
+
+[3]
+name=&quot;Michael Graham&quot; &lt;mgraham@rackspace.com&gt;
+email=&lt;mgraham@rackspace.com&gt;<br
+
+[4]
+name=Angelica Harris
+email=angelicaharris@hotmail.com
+
+[5]
+name=Jeff Harwick
+email=jeff.harwick@RACKSPACE.COM
+
+[6]
+name=Ryan
+email=ryanmorillo@gmail.com
+
+
